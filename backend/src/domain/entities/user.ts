@@ -4,6 +4,7 @@ import { Entity } from "../../core/entities/entity";
 export interface UserProps {
   userGroupId: UniqueEntityID;
   userAccessID: UniqueEntityID;
+  entrepriseID: UniqueEntityID;
   email: string;
   password: string;
   name: string;

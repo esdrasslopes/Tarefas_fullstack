@@ -3,6 +3,7 @@ import { Entity } from "../../core/entities/entity";
 
 export interface UserGroupProps {
   groupName: "ADMIN" | "USER";
+  userAccess: string;
 }
 
 export class UserGroup extends Entity<UserGroupProps> {

@@ -7,6 +7,7 @@ it("should be able to create an user group", () => {
   const userGroup = UserGroup.create(
     {
       groupName: "ADMIN",
+      userAccess: "admin@localhost",
     },
     new UniqueEntityID(randomUUID())
   );
