@@ -1,14 +1,14 @@
 import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
-export interface EntrerpiseProps {
+export interface EnterpriseProps {
   cnpj: string;
   email: string;
   password: string;
   entrepiseName: string;
 }
 
-export class Entrerpise extends Entity<EntrerpiseProps> {
+export class Enterprise extends Entity<EnterpriseProps> {
   get cnpj() {
     return this.props.cnpj;
   }
@@ -25,14 +25,14 @@ export class Entrerpise extends Entity<EntrerpiseProps> {
     return this.props.entrepiseName;
   }
 
-  static create(props: EntrerpiseProps, id: UniqueEntityID) {
-    const entrerpise = new Entrerpise(
+  static create(props: EnterpriseProps, id?: UniqueEntityID) {
+    const enterprise = new Enterprise(
       {
         ...props,
       },
       id
     );
 
-    return entrerpise;
+    return enterprise;
   }
 }
