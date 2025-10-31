@@ -17,4 +17,14 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
   async create(enterprise: Enterprise): Promise<void> {
     this.items.push(enterprise);
   }
+
+  async findById(id: string) {
+    const enterprise = this.items.find((item) => item.id.toString() === id);
+
+    if (!enterprise) {
+      return null;
+    }
+
+    return enterprise;
+  }
 }

@@ -15,7 +15,7 @@ export class UserGroup extends Entity<UserGroupProps> {
     return this.props.userAccessId;
   }
 
-  static create(props: UserGroupProps, id: UniqueEntityID) {
+  static create(props: UserGroupProps, id?: UniqueEntityID) {
     const userGroup = new UserGroup(
       {
         ...props,

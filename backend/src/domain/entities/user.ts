@@ -2,12 +2,13 @@ import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface UserProps {
-  userGroupId: UniqueEntityID;
-  userAccessID: UniqueEntityID;
+  userGroupId?: UniqueEntityID | null;
+  userAccessID?: UniqueEntityID | null;
   entrepriseID: UniqueEntityID;
   email: string;
   password: string;
   name: string;
+  role: "ADMIN" | "USER";
 }
 
 export class User extends Entity<UserProps> {
@@ -31,7 +32,11 @@ export class User extends Entity<UserProps> {
     return this.props.name;
   }
 
-  static create(props: UserProps, id: UniqueEntityID) {
+  get role() {
+    return this.props.role;
+  }
+
+  static create(props: UserProps, id?: UniqueEntityID) {
     const user = new User(
       {
         ...props,
