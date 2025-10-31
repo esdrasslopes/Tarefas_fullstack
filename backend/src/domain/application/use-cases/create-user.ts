@@ -35,7 +35,9 @@ export class CreateUserUseCase {
     userRole,
     requesterId,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    if (!this.usersRepository.hasPermission(requesterId)) {
+    const permission = await this.usersRepository.hasPermission(requesterId);
+
+    if (!permission) {
       return left(new UnauthorizedError());
     }
 

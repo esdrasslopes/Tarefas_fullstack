@@ -6,6 +6,8 @@ import { InMemoryGroupsRepository } from "../../../../test/repositories/in-memor
 import { InMemoryUsersRepository } from "../../../../test/repositories/in-memory-users-epository";
 import { CreateUserUseCase } from "./create-user";
 import { UserGroup } from "@/domain/entities/user-group";
+import { makeUser } from "../../../../test/factories/make-user";
+import { UnauthorizedError } from "../errors/unauthorized-error";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -61,5 +63,88 @@ describe("Create user", async () => {
     expect(result.value).toEqual({
       user: inMemoryUsersRepository.items[0],
     });
+  });
+
+  it("should be able to create an user being admin", async () => {
+    const entreprise = makeEnterprise();
+
+    inMemoryEnterpriseRepository.items.push(entreprise);
+
+    const userAccess = Users.create({
+      role: "ADMIN",
+      userAccess: "admin@localhost",
+    });
+
+    const userGroup = UserGroup.create({
+      groupName: "ADMIN",
+      userAccessId: userAccess.id,
+    });
+
+    inMemoryGroupsRepository.UserAccess.push(userAccess);
+
+    inMemoryGroupsRepository.groups.push(userGroup);
+
+    const user = makeUser({
+      entrepriseID: entreprise.id,
+      userAccessID: userAccess.id,
+      userGroupId: userGroup.id,
+    });
+
+    inMemoryUsersRepository.items.push(user);
+
+    const result = await sut.execute({
+      email: "johndoe@example.com",
+      enterpriseID: entreprise.id.toString(),
+      name: "John Doe",
+      password: "123456",
+      requesterId: user.id.toString(),
+      userRole: "ADMIN",
+    });
+
+    expect(result.isRight());
+    expect(result.value).toEqual({
+      user: inMemoryUsersRepository.items[1],
+    });
+  });
+
+  it("should not be able to create an user", async () => {
+    const entreprise = makeEnterprise();
+
+    inMemoryEnterpriseRepository.items.push(entreprise);
+
+    const userAccess = Users.create({
+      role: "USER",
+      userAccess: "admin@localhost",
+    });
+
+    const userGroup = UserGroup.create({
+      groupName: "USER",
+      userAccessId: userAccess.id,
+    });
+
+    inMemoryGroupsRepository.UserAccess.push(userAccess);
+
+    inMemoryGroupsRepository.groups.push(userGroup);
+
+    const user = makeUser({
+      entrepriseID: entreprise.id,
+      userAccessID: userAccess.id,
+      userGroupId: userGroup.id,
+      role: "USER",
+    });
+
+    inMemoryUsersRepository.items.push(user);
+
+    const result = await sut.execute({
+      email: "johndoe@example.com",
+      enterpriseID: entreprise.id.toString(),
+      name: "John Doe",
+      password: "123456",
+      requesterId: user.id.toString(),
+      userRole: "USER",
+    });
+
+    expect(result.isLeft());
+    expect(result.value).toBeInstanceOf(UnauthorizedError);
   });
 });
