@@ -2,9 +2,12 @@ import { left, right, type Either } from "@/core/either";
 import type { ProjectsRepository } from "../repositories/projects-repository";
 import type { UsersRepository } from "../repositories/users-repository";
 import { UnauthorizedError } from "../errors/unauthorized-error";
-import type { Task } from "@/domain/entities/task";
+import { Task } from "@/domain/entities/task";
 import type { TasksRepository } from "../repositories/tasks-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
+import { TaskAttachment } from "@/domain/entities/task-attachment";
+import { randomUUID } from "crypto";
+import { TaskAttachmentList } from "@/domain/entities/task-attachment-list";
 
 interface CreateTaskUseCaseRequest {
   projectId: string;
@@ -13,6 +16,7 @@ interface CreateTaskUseCaseRequest {
   status: "PENDING" | "COMPLETED";
   priority: "LOW" | "HIGH";
   requesterId: string;
+  attachmentsIds: string[];
 }
 
 type CreateTaskUseCaseResponse = Either<
@@ -34,6 +38,7 @@ export class CreateTaskUseCase {
     status,
     title,
     requesterId,
+    attachmentsIds,
   }: CreateTaskUseCaseRequest): Promise<CreateTaskUseCaseResponse> {
     const permission = this.usersRepository.hasPermission(requesterId);
 
@@ -47,13 +52,25 @@ export class CreateTaskUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    const task = await this.tasksRepository.create({
+    const task = Task.create({
       description,
       priority,
       projectId,
       status,
       title,
+      id: randomUUID(),
     });
+
+    const taskAttachment = attachmentsIds.map((attachmentId) => {
+      return TaskAttachment.create({
+        attachmentId: attachmentId,
+        taskId: task.id,
+      });
+    });
+
+    task.attachments = new TaskAttachmentList(taskAttachment);
+
+    await this.tasksRepository.create(task);
 
     return right({
       task,

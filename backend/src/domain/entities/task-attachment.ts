@@ -1,12 +1,11 @@
 import { Entity } from "../../core/entities/entity";
 
 export interface TaskAttachmentProps {
-  id: string;
   attachmentId: string;
   taskId: string;
 }
 
-export class Attachment extends Entity<TaskAttachmentProps> {
+export class TaskAttachment extends Entity<TaskAttachmentProps> {
   get attachmentId() {
     return this.props.attachmentId;
   }
@@ -15,12 +14,8 @@ export class Attachment extends Entity<TaskAttachmentProps> {
     return this.props.taskId;
   }
 
-  get id() {
-    return this.props.id;
-  }
-
   static create(props: TaskAttachmentProps) {
-    const attachment = new Attachment({
+    const attachment = new TaskAttachment({
       ...props,
     });
 

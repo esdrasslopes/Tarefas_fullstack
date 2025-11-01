@@ -1,21 +1,16 @@
-import type { Optional } from "@/core/types/optional";
+import type { TaskAttachmentsRepository } from "@/domain/application/repositories/task-attachments-repository";
 import type { TasksRepository } from "@/domain/application/repositories/tasks-repository";
-import { Task, type TaskProps } from "@/domain/entities/task";
-import { randomUUID } from "crypto";
+import { Task } from "@/domain/entities/task";
 
 export class InMemoryTasksRepository implements TasksRepository {
   public items: Task[] = [];
 
-  async create(
-    taskProps: Optional<TaskProps, "id" | "createdAt" | "completedAt">
-  ) {
-    const task = Task.create({
-      ...taskProps,
-      id: randomUUID(),
-      createdAt: new Date(),
-    });
+  constructor(private taskAttachmentRepository: TaskAttachmentsRepository) {}
 
+  async create(task: Task) {
     this.items.push(task);
+
+    await this.taskAttachmentRepository.createMany(task.attachments.getItems());
 
     return task;
   }
@@ -48,5 +43,27 @@ export class InMemoryTasksRepository implements TasksRepository {
     });
 
     return task;
+  }
+
+  async delete(id: string) {
+    const itemIndex = this.items.findIndex((item) => item.id === id);
+
+    this.items.splice(itemIndex, 1);
+
+    await this.taskAttachmentRepository.deleteManyByTaskId(id);
+  }
+
+  async save(task: Task) {
+    const itemIndex = this.items.findIndex((item) => item.id === task.id);
+
+    this.items[itemIndex] = task;
+
+    await this.taskAttachmentRepository.createMany(
+      task.attachments.getNewItems()
+    );
+
+    await this.taskAttachmentRepository.deleteMany(
+      task.attachments.getRemovedItems()
+    );
   }
 }

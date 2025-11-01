@@ -7,18 +7,23 @@ import { CreateTaskUseCase } from "./create-task";
 import { InMemoryTasksRepository } from "@/test/repositories/in-memory-tasks-repository";
 import { createUsersGroupsAndAccess } from "@/test/utils/create-users-groups-and-access";
 import { makeUser } from "@/test/factories/make-user";
+import { InMemoryTaskAttachmentsRepository } from "@/test/repositories/in-memory-task-attachments-repository";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let inMemoryProjectsRepository: InMemoryProjectsRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryTasksRepository: InMemoryTasksRepository;
+let inMemoryTaskAttachmentsRepository: InMemoryTaskAttachmentsRepository;
 let sut: CreateTaskUseCase;
 
 describe("Create Task", () => {
   beforeEach(() => {
     inMemoryEnterpriseRepository = new InMemoryEnterpriseRepository();
     inMemoryProjectsRepository = new InMemoryProjectsRepository();
-    inMemoryTasksRepository = new InMemoryTasksRepository();
+    inMemoryTaskAttachmentsRepository = new InMemoryTaskAttachmentsRepository();
+    inMemoryTasksRepository = new InMemoryTasksRepository(
+      inMemoryTaskAttachmentsRepository
+    );
     inMemoryUsersRepository = new InMemoryUsersRepository(
       inMemoryEnterpriseRepository
     );
@@ -47,12 +52,32 @@ describe("Create Task", () => {
       requesterId: enterprise.id,
       status: "PENDING",
       title: "New task",
+      attachmentsIds: ["1", "2"],
     });
 
     expect(result.isRight());
     expect(result.value).toEqual({
       task: inMemoryTasksRepository.items[0],
     });
+    expect(inMemoryTasksRepository.items[0]?.attachments.currentItems).toEqual([
+      expect.objectContaining({
+        attachmentId: "1",
+      }),
+      expect.objectContaining({
+        attachmentId: "2",
+      }),
+    ]);
+
+    expect(inMemoryTaskAttachmentsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: "1",
+        }),
+        expect.objectContaining({
+          attachmentId: "1",
+        }),
+      ])
+    );
   });
 
   it("should be able to create a new project with admin access", async () => {
@@ -84,6 +109,7 @@ describe("Create Task", () => {
       requesterId: user.id,
       status: "PENDING",
       title: "New task",
+      attachmentsIds: ["1", "2"],
     });
 
     expect(result.isRight());
