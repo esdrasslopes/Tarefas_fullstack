@@ -28,6 +28,10 @@ export class Task extends Entity<TaskProps> {
     return this.props.status;
   }
 
+  set status(newStatus: "PENDING" | "COMPLETED") {
+    this.props.status = newStatus;
+  }
+
   get priority() {
     return this.props.priority;
   }
@@ -40,8 +44,16 @@ export class Task extends Entity<TaskProps> {
     return this.props.completedAt;
   }
 
+  set completedAt(date: Date | undefined | null) {
+    this.completedAt = date;
+  }
+
   get id() {
     return this.props.id;
+  }
+
+  private update() {
+    this.completedAt = new Date();
   }
 
   static create(props: TaskProps) {

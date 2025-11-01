@@ -1,12 +1,12 @@
-import { InMemoryEnterpriseRepository } from "../../../../test/repositories/in-memory-enterprise-repository";
-import { makeEnterprise } from "../../../../test/factories/make-enterprise";
-import { InMemoryProjectsRepository } from "../../../../test/repositories/in-memory-projects-repository";
-import { makeProject } from "../../../../test/factories/make-project";
-import { InMemoryUsersRepository } from "../../../../test/repositories/in-memory-users-epository";
+import { InMemoryEnterpriseRepository } from "@/test/repositories/in-memory-enterprise-repository";
+import { makeEnterprise } from "@/test/factories/make-enterprise";
+import { InMemoryProjectsRepository } from "@/test/repositories/in-memory-projects-repository";
+import { makeProject } from "@/test/factories/make-project";
+import { InMemoryUsersRepository } from "@/test/repositories/in-memory-users-epository";
 import { CreateTaskUseCase } from "./create-task";
-import { InMemoryTasksRepository } from "../../../../test/repositories/in-memory-tasks-repository";
-import { createUsersGroupsAndAccess } from "../../../../test/utils/create-users-groups-and-access";
-import { makeUser } from "../../../../test/factories/make-user";
+import { InMemoryTasksRepository } from "@/test/repositories/in-memory-tasks-repository";
+import { createUsersGroupsAndAccess } from "@/test/utils/create-users-groups-and-access";
+import { makeUser } from "@/test/factories/make-user";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let inMemoryProjectsRepository: InMemoryProjectsRepository;

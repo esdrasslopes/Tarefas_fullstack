@@ -1,8 +1,8 @@
-import { FakeHasher } from "../../../../test/cryptography/fake-hasher";
-import { InMemoryEnterpriseRepository } from "../../../../test/repositories/in-memory-enterprise-repository";
+import { FakeHasher } from "@/test/cryptography/fake-hasher";
+import { InMemoryEnterpriseRepository } from "@/test/repositories/in-memory-enterprise-repository";
 import { CreateEnterpriseUseCase } from "./create-enterprise";
 import { EnterpriseAlreadyExistsError } from "../errors/enterprise-already-exists-error";
-import { makeEnterprise } from "../../../../test/factories/make-enterprise";
+import { makeEnterprise } from "@/test/factories/make-enterprise";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let fakeHasher: FakeHasher;

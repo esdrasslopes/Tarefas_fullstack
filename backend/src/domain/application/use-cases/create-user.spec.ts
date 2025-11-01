@@ -1,12 +1,12 @@
 import { Users } from "@/domain/entities/users";
-import { FakeHasher } from "../../../../test/cryptography/fake-hasher";
-import { makeEnterprise } from "../../../../test/factories/make-enterprise";
-import { InMemoryEnterpriseRepository } from "../../../../test/repositories/in-memory-enterprise-repository";
-import { InMemoryGroupsRepository } from "../../../../test/repositories/in-memory-groups-repository";
-import { InMemoryUsersRepository } from "../../../../test/repositories/in-memory-users-epository";
+import { FakeHasher } from "@/test/cryptography/fake-hasher";
+import { makeEnterprise } from "@/test/factories/make-enterprise";
+import { InMemoryEnterpriseRepository } from "@/test/repositories/in-memory-enterprise-repository";
+import { InMemoryGroupsRepository } from "@/test/repositories/in-memory-groups-repository";
+import { InMemoryUsersRepository } from "@/test/repositories/in-memory-users-epository";
 import { CreateUserUseCase } from "./create-user";
 import { UserGroup } from "@/domain/entities/user-group";
-import { makeUser } from "../../../../test/factories/make-user";
+import { makeUser } from "@/test/factories/make-user";
 import { UnauthorizedError } from "../errors/unauthorized-error";
 import { randomUUID } from "crypto";
 

@@ -1,9 +1,9 @@
-import { makeEnterprise } from "../../../../test/factories/make-enterprise";
-import { InMemoryProjectsRepository } from "../../../../test/repositories/in-memory-projects-repository";
-import { makeProject } from "../../../../test/factories/make-project";
-import { InMemoryUserProjectsRepository } from "../../../../test/repositories/in-memory-user-projects-repository";
+import { makeEnterprise } from "@/test/factories/make-enterprise";
+import { InMemoryProjectsRepository } from "@/test/repositories/in-memory-projects-repository";
+import { makeProject } from "@/test/factories/make-project";
+import { InMemoryUserProjectsRepository } from "@/test/repositories/in-memory-user-projects-repository";
 import { GetInAProjectUseCase } from "./get-in-a-project";
-import { InMemoryEnterpriseRepository } from "../../../../test/repositories/in-memory-enterprise-repository";
+import { InMemoryEnterpriseRepository } from "@/test/repositories/in-memory-enterprise-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
 
 let inMemoryProjectsRepository: InMemoryProjectsRepository;

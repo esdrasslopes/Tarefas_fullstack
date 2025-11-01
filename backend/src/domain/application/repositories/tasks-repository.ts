@@ -6,4 +6,5 @@ export interface TasksRepository {
   create(
     taskProps: Optional<TaskProps, "id" | "createdAt" | "completedAt">
   ): Promise<Task>;
+  updateTaskStatus(id: string, status: "PENDING" | "COMPLETED"): Promise<Task>;
 }

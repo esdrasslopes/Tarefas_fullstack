@@ -16,7 +16,7 @@ interface CreateTaskUseCaseRequest {
 }
 
 type CreateTaskUseCaseResponse = Either<
-  UnauthorizedError | UnauthorizedError,
+  UnauthorizedError | ResourceNotFoundError,
   { task: Task }
 >;
 

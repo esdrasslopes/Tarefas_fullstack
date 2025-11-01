@@ -1,15 +1,15 @@
-import { InMemoryEnterpriseRepository } from "../../../../test/repositories/in-memory-enterprise-repository";
-import { makeEnterprise } from "../../../../test/factories/make-enterprise";
-import { InMemoryProjectsRepository } from "../../../../test/repositories/in-memory-projects-repository";
+import { InMemoryEnterpriseRepository } from "@/test/repositories/in-memory-enterprise-repository";
+import { makeEnterprise } from "@/test/factories/make-enterprise";
+import { InMemoryProjectsRepository } from "@/test/repositories/in-memory-projects-repository";
 import { CreateProjectUseCase } from "./create-project";
-import { makeProject } from "../../../../test/factories/make-project";
+import { makeProject } from "@/test/factories/make-project";
 import { ProjectAlreadyExistsError } from "../errors/project-already-exists.error";
-import { InMemoryUsersRepository } from "../../../../test/repositories/in-memory-users-epository";
+import { InMemoryUsersRepository } from "@/test/repositories/in-memory-users-epository";
 import { Users } from "@/domain/entities/users";
 import { randomUUID } from "crypto";
-import { InMemoryGroupsRepository } from "../../../../test/repositories/in-memory-groups-repository";
+import { InMemoryGroupsRepository } from "@/test/repositories/in-memory-groups-repository";
 import { UserGroup } from "@/domain/entities/user-group";
-import { makeUser } from "../../../../test/factories/make-user";
+import { makeUser } from "@/test/factories/make-user";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let inMemoryProjectsRepository: InMemoryProjectsRepository;

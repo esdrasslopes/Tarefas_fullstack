@@ -20,12 +20,32 @@ export class InMemoryTasksRepository implements TasksRepository {
     return task;
   }
 
-  async findById(id: string): Promise<Task | null> {
+  async findById(id: string) {
     const task = this.items.find((item) => item.id === id);
 
     if (!task) {
       return null;
     }
+
+    return task;
+  }
+
+  async updateTaskStatus(id: string, status: "PENDING" | "COMPLETED") {
+    const task = this.items.find((item) => item.id === id);
+
+    if (!task) {
+      throw new Error();
+    }
+
+    task.status = status;
+
+    this.items = this.items.map((item) => {
+      if (item.id === id) {
+        return task;
+      }
+
+      return item;
+    });
 
     return task;
   }
