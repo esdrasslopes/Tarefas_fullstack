@@ -1,7 +1,7 @@
 import { Entity } from "../../core/entities/entity";
 
 export interface UserProjectProps {
-  id: string;
+  id?: string;
   userId: string;
   projectId: string;
 }
