@@ -1,7 +1,8 @@
+import type { Optional } from "@/core/types/optional";
 import { Entity } from "../../core/entities/entity";
 
 export interface ProjectProps {
-  id: string;
+  id?: string;
   enterpriseId: string;
   projectName: string;
   description: string;
@@ -24,7 +25,7 @@ export class Project extends Entity<ProjectProps> {
     return this.props.id;
   }
 
-  static create(props: ProjectProps) {
+  static create(props: Optional<ProjectProps, "id">) {
     const project = new Project({
       ...props,
     });

@@ -1,5 +1,6 @@
 import type { EnterpriseRepository } from "@/domain/application/repositories/entreprises-repository";
-import type { Enterprise } from "@/domain/entities/enterprise";
+import { Enterprise, type EnterpriseProps } from "@/domain/entities/enterprise";
+import { randomUUID } from "crypto";
 
 export class InMemoryEnterpriseRepository implements EnterpriseRepository {
   public items: Enterprise[] = [];
@@ -14,12 +15,19 @@ export class InMemoryEnterpriseRepository implements EnterpriseRepository {
     return enterprise;
   }
 
-  async create(enterprise: Enterprise): Promise<void> {
-    this.items.push(enterprise);
+  async create(enterpriseProps: EnterpriseProps) {
+    const entreprise = Enterprise.create({
+      ...enterpriseProps,
+      id: randomUUID(),
+    });
+
+    this.items.push(entreprise);
+
+    return entreprise;
   }
 
   async findById(id: string) {
-    const enterprise = this.items.find((item) => item.id.toString() === id);
+    const enterprise = this.items.find((item) => item.id === id);
 
     if (!enterprise) {
       return null;

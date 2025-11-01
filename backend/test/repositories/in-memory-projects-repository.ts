@@ -1,0 +1,28 @@
+import type { ProjectsRepository } from "@/domain/application/repositories/projects-repository";
+import { Project, type ProjectProps } from "@/domain/entities/project";
+import { randomUUID } from "crypto";
+
+export class InMemoryProjectsRepository implements ProjectsRepository {
+  public items: Project[] = [];
+
+  async create(projectProps: ProjectProps) {
+    const project = Project.create({
+      ...projectProps,
+      id: randomUUID(),
+    });
+
+    this.items.push(project);
+
+    return project;
+  }
+
+  async findByProjectName(name: string) {
+    const project = this.items.find((item) => item.projectName === name);
+
+    if (!project) {
+      return null;
+    }
+
+    return project;
+  }
+}

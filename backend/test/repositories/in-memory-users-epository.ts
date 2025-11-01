@@ -1,5 +1,5 @@
 import type { UsersRepository } from "@/domain/application/repositories/users-repository";
-import { User } from "@/domain/entities/user";
+import { User, type UserProps } from "@/domain/entities/user";
 import type { InMemoryEnterpriseRepository } from "./in-memory-enterprise-repository";
 import { randomUUID } from "node:crypto";
 
@@ -8,19 +8,15 @@ export class InMemoryUsersRepository implements UsersRepository {
 
   constructor(private enterpriseRepository: InMemoryEnterpriseRepository) {}
 
-  async create(user: User) {
+  async create(userProps: UserProps) {
     const newUser = User.create({
-      id: user.id ?? randomUUID(),
-      email: user.email,
-      entrepriseID: user.entrepriseID,
-      name: user.name,
-      password: user.password,
-      role: user.role,
-      userAccessID: user.userAccessID,
-      userGroupId: user.userGroupId,
+      ...userProps,
+      id: randomUUID(),
     });
 
     this.items.push(newUser);
+
+    return newUser;
   }
 
   async findByEmail(email: string) {

@@ -1,6 +1,7 @@
 import { Entity } from "../../core/entities/entity";
 
 export interface UserProjectProps {
+  id: string;
   userId: string;
   projectId: string;
 }
@@ -12,6 +13,10 @@ export class UserProject extends Entity<UserProjectProps> {
 
   get projectId() {
     return this.props.projectId;
+  }
+
+  get id() {
+    return this.props.id;
   }
 
   static create(props: UserProjectProps) {

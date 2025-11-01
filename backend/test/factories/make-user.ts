@@ -5,11 +5,12 @@ import { randomUUID } from "crypto";
 export function makeUser(override: Partial<UserProps> = {}) {
   const user = User.create({
     email: faker.internet.email(),
-    entrepriseID: randomUUID(),
+    enterpriseId: randomUUID(),
     name: faker.person.fullName(),
     role: "ADMIN",
     password: faker.internet.password(),
     id: randomUUID(),
+    userAccessId: randomUUID(),
     ...override,
   });
 

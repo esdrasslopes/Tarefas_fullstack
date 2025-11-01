@@ -1,10 +1,10 @@
 import { Entity } from "../../core/entities/entity";
 
 export interface UserProps {
-  id: string;
+  id?: string;
   userGroupId?: string | null;
-  userAccessID?: string | null;
-  entrepriseID: string;
+  userAccessId?: string | null;
+  enterpriseId: string;
   email: string;
   password: string;
   name: string;
@@ -16,8 +16,8 @@ export class User extends Entity<UserProps> {
     return this.props.userGroupId ?? null;
   }
 
-  get userAccessID() {
-    return this.props.userAccessID ?? null;
+  get userAccessId() {
+    return this.props.userAccessId ?? null;
   }
 
   get email() {
@@ -40,8 +40,8 @@ export class User extends Entity<UserProps> {
     return this.props.id;
   }
 
-  get entrepriseID() {
-    return this.props.entrepriseID;
+  get enterpriseId() {
+    return this.props.enterpriseId;
   }
 
   static create(props: UserProps) {

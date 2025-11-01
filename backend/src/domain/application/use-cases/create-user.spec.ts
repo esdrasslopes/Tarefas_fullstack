@@ -33,9 +33,9 @@ describe("Create user", async () => {
   });
 
   it("should be able to create an user", async () => {
-    const entreprise = makeEnterprise();
+    const enterprise = makeEnterprise();
 
-    inMemoryEnterpriseRepository.items.push(entreprise);
+    inMemoryEnterpriseRepository.items.push(enterprise);
 
     const userAccess = Users.create({
       role: "ADMIN",
@@ -53,12 +53,16 @@ describe("Create user", async () => {
       })
     );
 
+    if (!enterprise.id) {
+      throw new Error();
+    }
+
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id,
+      enterpriseId: enterprise.id ?? "",
       name: "John Doe",
       password: "123456",
-      requesterId: entreprise.id,
+      requesterId: enterprise.id ?? "",
       userRole: "ADMIN",
     });
 
@@ -69,9 +73,13 @@ describe("Create user", async () => {
   });
 
   it("should be able to create an user being admin", async () => {
-    const entreprise = makeEnterprise();
+    const enterprise = makeEnterprise();
 
-    inMemoryEnterpriseRepository.items.push(entreprise);
+    inMemoryEnterpriseRepository.items.push(enterprise);
+
+    if (!enterprise.id) {
+      throw new Error();
+    }
 
     const userAccess = Users.create({
       role: "ADMIN",
@@ -90,16 +98,20 @@ describe("Create user", async () => {
     inMemoryGroupsRepository.groups.push(userGroup);
 
     const user = makeUser({
-      entrepriseID: entreprise.id,
-      userAccessID: userAccess.id,
+      enterpriseId: enterprise.id,
+      userAccessId: userAccess.id,
       userGroupId: userGroup.id,
     });
+
+    if (!user.id) {
+      throw new Error();
+    }
 
     inMemoryUsersRepository.items.push(user);
 
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id,
+      enterpriseId: enterprise.id,
       name: "John Doe",
       password: "123456",
       requesterId: user.id,
@@ -113,9 +125,13 @@ describe("Create user", async () => {
   });
 
   it("should not be able to create an user", async () => {
-    const entreprise = makeEnterprise();
+    const enterprise = makeEnterprise();
 
-    inMemoryEnterpriseRepository.items.push(entreprise);
+    inMemoryEnterpriseRepository.items.push(enterprise);
+
+    if (!enterprise.id) {
+      throw new Error();
+    }
 
     const userAccess = Users.create({
       role: "USER",
@@ -134,17 +150,21 @@ describe("Create user", async () => {
     inMemoryGroupsRepository.groups.push(userGroup);
 
     const user = makeUser({
-      entrepriseID: entreprise.id,
-      userAccessID: userAccess.id,
+      enterpriseId: enterprise.id,
+      userAccessId: userAccess.id,
       userGroupId: userGroup.id,
       role: "USER",
     });
+
+    if (!user.id) {
+      throw new Error();
+    }
 
     inMemoryUsersRepository.items.push(user);
 
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id,
+      enterpriseId: enterprise.id,
       name: "John Doe",
       password: "123456",
       requesterId: user.id,

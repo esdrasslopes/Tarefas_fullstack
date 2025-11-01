@@ -8,11 +8,10 @@ import { User } from "@/domain/entities/user";
 import { EnterpriseDoesNotExistsError } from "../errors/enterprise-does-not-exists-error";
 import type { GroupsRepository } from "../repositories/groups-repository";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error";
-import { randomUUID } from "crypto";
 
 interface CreateUserUseCaseRequest {
   requesterId: string;
-  enterpriseID: string;
+  enterpriseId: string;
   email: string;
   password: string;
   name: string;
@@ -34,7 +33,7 @@ export class CreateUserUseCase {
 
   async execute({
     email,
-    enterpriseID,
+    enterpriseId,
     name,
     password,
     userRole,
@@ -46,7 +45,7 @@ export class CreateUserUseCase {
       return left(new UnauthorizedError());
     }
 
-    const enterprise = await this.enterpriseRepository.findById(enterpriseID);
+    const enterprise = await this.enterpriseRepository.findById(enterpriseId);
 
     if (!enterprise) {
       return left(new EnterpriseDoesNotExistsError());
@@ -66,18 +65,15 @@ export class CreateUserUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    const user = User.create({
+    const user = await this.usersRepository.create({
       email,
-      entrepriseID: enterprise?.id,
+      enterpriseId,
       name,
       password: passwordHash,
       role: userRole,
       userGroupId: userInformations.userGroupId,
-      userAccessID: userInformations.userAccessId,
-      id: randomUUID(),
+      userAccessId: userInformations.userAccessId,
     });
-
-    await this.usersRepository.create(user);
 
     return right({
       user,

@@ -38,14 +38,12 @@ export class CreateEnterpriseUseCase {
 
     const passwordHash = await this.hashGenerator.hash(password);
 
-    const enterprise = Enterprise.create({
+    const enterprise = await this.enterpriseRepository.create({
       cnpj,
       email,
       entrepiseName,
       password: passwordHash,
     });
-
-    await this.enterpriseRepository.create(enterprise);
 
     return right({
       enterprise,
