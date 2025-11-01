@@ -25,10 +25,6 @@ describe("Create user project", () => {
   it("should be able to create a new user project", async () => {
     const enterprise = makeEnterprise();
 
-    if (!enterprise.id) {
-      throw new Error();
-    }
-
     inMemoryEnterpriseRepository.items.push(enterprise);
 
     const project = makeProject({
@@ -36,10 +32,6 @@ describe("Create user project", () => {
     });
 
     inMemoryProjectsRepository.items.push(project);
-
-    if (!project.id) {
-      throw new Error();
-    }
 
     const result = await sut.execute({
       projectId: project.id,

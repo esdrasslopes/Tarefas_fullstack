@@ -2,13 +2,14 @@ import type { UsersRepository } from "@/domain/application/repositories/users-re
 import { User, type UserProps } from "@/domain/entities/user";
 import type { InMemoryEnterpriseRepository } from "./in-memory-enterprise-repository";
 import { randomUUID } from "node:crypto";
+import type { Optional } from "@/core/types/optional";
 
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = [];
 
   constructor(private enterpriseRepository: InMemoryEnterpriseRepository) {}
 
-  async create(userProps: UserProps) {
+  async create(userProps: Optional<UserProps, "id">) {
     const newUser = User.create({
       ...userProps,
       id: randomUUID(),

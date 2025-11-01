@@ -76,11 +76,6 @@ describe("Create user", async () => {
     const enterprise = makeEnterprise();
 
     inMemoryEnterpriseRepository.items.push(enterprise);
-
-    if (!enterprise.id) {
-      throw new Error();
-    }
-
     const userAccess = Users.create({
       role: "ADMIN",
       userAccess: "admin@localhost",
@@ -102,10 +97,6 @@ describe("Create user", async () => {
       userAccessId: userAccess.id,
       userGroupId: userGroup.id,
     });
-
-    if (!user.id) {
-      throw new Error();
-    }
 
     inMemoryUsersRepository.items.push(user);
 
@@ -129,10 +120,6 @@ describe("Create user", async () => {
 
     inMemoryEnterpriseRepository.items.push(enterprise);
 
-    if (!enterprise.id) {
-      throw new Error();
-    }
-
     const userAccess = Users.create({
       role: "USER",
       userAccess: "admin@localhost",
@@ -155,10 +142,6 @@ describe("Create user", async () => {
       userGroupId: userGroup.id,
       role: "USER",
     });
-
-    if (!user.id) {
-      throw new Error();
-    }
 
     inMemoryUsersRepository.items.push(user);
 

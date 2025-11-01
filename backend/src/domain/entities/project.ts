@@ -1,7 +1,7 @@
 import { Entity } from "../../core/entities/entity";
 
 export interface ProjectProps {
-  id?: string;
+  id: string;
   enterpriseId: string;
   projectName: string;
   description: string;

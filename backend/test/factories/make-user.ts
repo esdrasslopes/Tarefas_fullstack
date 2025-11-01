@@ -11,6 +11,7 @@ export function makeUser(override: Partial<UserProps> = {}) {
     password: faker.internet.password(),
     id: randomUUID(),
     userAccessId: randomUUID(),
+    userGroupId: randomUUID(),
     ...override,
   });
 

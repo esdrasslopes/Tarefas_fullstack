@@ -1,3 +1,4 @@
+import type { Optional } from "@/core/types/optional";
 import type { ProjectsRepository } from "@/domain/application/repositories/projects-repository";
 import { Project, type ProjectProps } from "@/domain/entities/project";
 import { randomUUID } from "crypto";
@@ -5,7 +6,7 @@ import { randomUUID } from "crypto";
 export class InMemoryProjectsRepository implements ProjectsRepository {
   public items: Project[] = [];
 
-  async create(projectProps: ProjectProps) {
+  async create(projectProps: Optional<ProjectProps, "id">) {
     const project = Project.create({
       ...projectProps,
       id: randomUUID(),
