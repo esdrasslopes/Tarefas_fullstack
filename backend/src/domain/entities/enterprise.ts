@@ -1,7 +1,7 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface EnterpriseProps {
+  id: string;
   cnpj: string;
   email: string;
   password: string;
@@ -25,13 +25,14 @@ export class Enterprise extends Entity<EnterpriseProps> {
     return this.props.entrepiseName;
   }
 
-  static create(props: EnterpriseProps, id?: UniqueEntityID) {
-    const enterprise = new Enterprise(
-      {
-        ...props,
-      },
-      id
-    );
+  get id() {
+    return this.props.id;
+  }
+
+  static create(props: EnterpriseProps) {
+    const enterprise = new Enterprise({
+      ...props,
+    });
 
     return enterprise;
   }

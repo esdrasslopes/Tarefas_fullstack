@@ -1,8 +1,6 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
-
 interface UserAccess {
-  userGroupId: UniqueEntityID;
-  userAccessId: UniqueEntityID;
+  userGroupId: string;
+  userAccessId: string;
 }
 
 export interface GroupsRepository {

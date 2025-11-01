@@ -7,6 +7,8 @@ import { UnauthorizedError } from "../errors/unauthorized-error";
 import { User } from "@/domain/entities/user";
 import { EnterpriseDoesNotExistsError } from "../errors/enterprise-does-not-exists-error";
 import type { GroupsRepository } from "../repositories/groups-repository";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
+import { randomUUID } from "crypto";
 
 interface CreateUserUseCaseRequest {
   requesterId: string;
@@ -17,7 +19,10 @@ interface CreateUserUseCaseRequest {
   userRole: "ADMIN" | "USER";
 }
 
-type CreateUserUseCaseResponse = Either<UserAlreadyExistsError, { user: User }>;
+type CreateUserUseCaseResponse = Either<
+  UserAlreadyExistsError | ResourceNotFoundError | UnauthorizedError,
+  { user: User }
+>;
 
 export class CreateUserUseCase {
   constructor(
@@ -58,7 +63,7 @@ export class CreateUserUseCase {
     const userInformations = await this.groupsRepository.getUserAcess(userRole);
 
     if (!userInformations) {
-      throw new Error();
+      return left(new ResourceNotFoundError());
     }
 
     const user = User.create({
@@ -69,6 +74,7 @@ export class CreateUserUseCase {
       role: userRole,
       userGroupId: userInformations.userGroupId,
       userAccessID: userInformations.userAccessId,
+      id: randomUUID(),
     });
 
     await this.usersRepository.create(user);

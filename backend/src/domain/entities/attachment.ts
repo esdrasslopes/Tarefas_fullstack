@@ -1,7 +1,7 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface AttachmentProps {
+  id: string;
   title: string;
   url: string;
 }
@@ -15,13 +15,14 @@ export class Attachment extends Entity<AttachmentProps> {
     return this.props.url;
   }
 
-  static create(props: AttachmentProps, id: UniqueEntityID) {
-    const attachment = new Attachment(
-      {
-        ...props,
-      },
-      id
-    );
+  get id() {
+    return this.props.id;
+  }
+
+  static create(props: AttachmentProps) {
+    const attachment = new Attachment({
+      ...props,
+    });
 
     return attachment;
   }

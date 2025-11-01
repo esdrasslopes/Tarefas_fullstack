@@ -1,9 +1,9 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface TaskAttachmentProps {
-  attachmentId: UniqueEntityID;
-  taskId: UniqueEntityID;
+  id: string;
+  attachmentId: string;
+  taskId: string;
 }
 
 export class Attachment extends Entity<TaskAttachmentProps> {
@@ -15,13 +15,14 @@ export class Attachment extends Entity<TaskAttachmentProps> {
     return this.props.taskId;
   }
 
-  static create(props: TaskAttachmentProps, id: UniqueEntityID) {
-    const attachment = new Attachment(
-      {
-        ...props,
-      },
-      id
-    );
+  get id() {
+    return this.props.id;
+  }
+
+  static create(props: TaskAttachmentProps) {
+    const attachment = new Attachment({
+      ...props,
+    });
 
     return attachment;
   }

@@ -1,9 +1,8 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface UserProjectProps {
-  userId: UniqueEntityID;
-  projectId: UniqueEntityID;
+  userId: string;
+  projectId: string;
 }
 
 export class UserProject extends Entity<UserProjectProps> {
@@ -15,13 +14,10 @@ export class UserProject extends Entity<UserProjectProps> {
     return this.props.projectId;
   }
 
-  static create(props: UserProjectProps, id: UniqueEntityID) {
-    const userProject = new UserProject(
-      {
-        ...props,
-      },
-      id
-    );
+  static create(props: UserProjectProps) {
+    const userProject = new UserProject({
+      ...props,
+    });
 
     return userProject;
   }

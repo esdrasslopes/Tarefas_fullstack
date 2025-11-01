@@ -1,9 +1,9 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Entity } from "../../core/entities/entity";
 
 export interface UserGroupProps {
+  id: string;
   groupName: "ADMIN" | "USER";
-  userAccessId: UniqueEntityID;
+  userAccessId: string;
 }
 
 export class UserGroup extends Entity<UserGroupProps> {
@@ -15,13 +15,14 @@ export class UserGroup extends Entity<UserGroupProps> {
     return this.props.userAccessId;
   }
 
-  static create(props: UserGroupProps, id?: UniqueEntityID) {
-    const userGroup = new UserGroup(
-      {
-        ...props,
-      },
-      id
-    );
+  get id() {
+    return this.props.id;
+  }
+
+  static create(props: UserGroupProps) {
+    const userGroup = new UserGroup({
+      ...props,
+    });
 
     return userGroup;
   }

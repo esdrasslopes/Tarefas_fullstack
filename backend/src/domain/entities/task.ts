@@ -1,8 +1,8 @@
-import type { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { Entity } from "../../core/entities/entity";
+import { Entity } from "@/core/entities/entity";
 
 export interface TaskProps {
-  projectId: UniqueEntityID;
+  id: string;
+  projectId: string;
   title: string;
   description: string;
   status: "PENDING" | "COMPLETED";
@@ -40,13 +40,14 @@ export class Task extends Entity<TaskProps> {
     return this.props.completedAt;
   }
 
-  static create(props: TaskProps, id: UniqueEntityID) {
-    const task = new Task(
-      {
-        ...props,
-      },
-      id
-    );
+  get id() {
+    return this.props.id;
+  }
+
+  static create(props: TaskProps) {
+    const task = new Task({
+      ...props,
+    });
 
     return task;
   }

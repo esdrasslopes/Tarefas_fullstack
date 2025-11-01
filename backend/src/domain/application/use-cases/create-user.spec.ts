@@ -8,6 +8,7 @@ import { CreateUserUseCase } from "./create-user";
 import { UserGroup } from "@/domain/entities/user-group";
 import { makeUser } from "../../../../test/factories/make-user";
 import { UnauthorizedError } from "../errors/unauthorized-error";
+import { randomUUID } from "crypto";
 
 let inMemoryEnterpriseRepository: InMemoryEnterpriseRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -39,6 +40,7 @@ describe("Create user", async () => {
     const userAccess = Users.create({
       role: "ADMIN",
       userAccess: "admin@localhost",
+      id: randomUUID(),
     });
 
     inMemoryGroupsRepository.UserAccess.push(userAccess);
@@ -47,15 +49,16 @@ describe("Create user", async () => {
       UserGroup.create({
         groupName: "ADMIN",
         userAccessId: userAccess.id,
+        id: randomUUID(),
       })
     );
 
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id.toString(),
+      enterpriseID: entreprise.id,
       name: "John Doe",
       password: "123456",
-      requesterId: entreprise.id.toString(),
+      requesterId: entreprise.id,
       userRole: "ADMIN",
     });
 
@@ -73,11 +76,13 @@ describe("Create user", async () => {
     const userAccess = Users.create({
       role: "ADMIN",
       userAccess: "admin@localhost",
+      id: randomUUID(),
     });
 
     const userGroup = UserGroup.create({
       groupName: "ADMIN",
       userAccessId: userAccess.id,
+      id: randomUUID(),
     });
 
     inMemoryGroupsRepository.UserAccess.push(userAccess);
@@ -94,10 +99,10 @@ describe("Create user", async () => {
 
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id.toString(),
+      enterpriseID: entreprise.id,
       name: "John Doe",
       password: "123456",
-      requesterId: user.id.toString(),
+      requesterId: user.id,
       userRole: "ADMIN",
     });
 
@@ -115,11 +120,13 @@ describe("Create user", async () => {
     const userAccess = Users.create({
       role: "USER",
       userAccess: "admin@localhost",
+      id: randomUUID(),
     });
 
     const userGroup = UserGroup.create({
       groupName: "USER",
       userAccessId: userAccess.id,
+      id: randomUUID(),
     });
 
     inMemoryGroupsRepository.UserAccess.push(userAccess);
@@ -137,10 +144,10 @@ describe("Create user", async () => {
 
     const result = await sut.execute({
       email: "johndoe@example.com",
-      enterpriseID: entreprise.id.toString(),
+      enterpriseID: entreprise.id,
       name: "John Doe",
       password: "123456",
-      requesterId: user.id.toString(),
+      requesterId: user.id,
       userRole: "USER",
     });
 
